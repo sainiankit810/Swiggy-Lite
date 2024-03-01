@@ -1,79 +1,56 @@
-const addresses = require("../models/address");
+const addresses = require('../models/address');
+const authValidation = require('../validation/address_validation');
 
-const addAddress = {
-  addAddress: async (req, res) => {
-    try {
-      const {user_id, restaurant_id, address, city, state, pincode, location} = req.body;
-      const newAddress = new addresses({
-        user_id,
-        restaurant_id,
-        address,
-        city,
-        state,
-        pincode,
-        location,
-      });
+const addressController = {
+    addAddress: async (req, res) => {
+      try {
+        const user_id = req.user_id;
+        const { address, city, state, pincode, location } = req.body;
+        const isValid = await authValidation(req.body);
+        if (isValid.error) {
+          return res.status(404).json({ message: isValid.error.details[0].message });
+        }
+        const newAddress = await addresses.create({ user_id: user_id, address, city, state, pincode, location });
+        return res.status(200).json({ result: newAddress });
+      } catch (error) {
+        res.status(500).json('Something went wrong');
+        console.log(error);
+      }
+    },
 
-      await newAddress.save();
-      res.status(201).send("Address added successfully");
-    } catch (error) {
-      res.status(400).send(error.message);
-    }
-  },
-  getAllAddresses: async (req, res) => {
-    try {
-      const address = await addresses.find();
-      res.status(200).json(address);
-    } catch (error) {
-      res.status(500).json({ error: "Internal server error" });
-    }
-  },
+    getAllAddresses: async (req, res) => {
+      const allAddresses = await addresses.find({ user_id: req.user_id });
+      return res.status(200).json({ result: allAddresses });
+    },
 
-  // Get an address by ID
-  getAddressById: async (req, res) => {
-    try {
-      const address = await addresses.findById(req.params.id);
+    getAddressById: async (req, res) => {
+      const address = await addresses.findById({ _id: req.params.addressId, user_id: req.user_id });
       if (!address) {
-        return res.status(404).json({ message: "Address not found" });
+        return res.status(404).json({ message: 'Address not found with id ' + req.params.addressId });
       }
-      res.status(200).json(address);
-    } catch (error) {
-      res.status(500).json({ error: "Internal server error" });
-    }
-  },
+      return res.status(200).json({ result: address });
+    },
 
-  // Update an address by ID
-  updateAddressById: async (req, res) => {
-    try {
+    updateAddressById: async (req, res) => {
       const { address, city, state, pincode, location } = req.body;
-      const updatedAddress = await addresses.findByIdAndUpdate(
-        req.params.id,
-        { address, city, state, pincode, location },
-        { new: true }
-      );
-      if (!updatedAddress) {
-        return res.status(404).json({ message: "Address not found" });
+      const newaddress = await addresses.findByIdAndUpdate({ _id: req.params.addressId, user_id: req.user_id }, 
+        {address, city, state, pincode, location},{ new: true });
+
+      if (!newaddress) {
+        return res.status(404).json({ message: 'Address not found with id ' + req.params.addressId });
       }
-      res.status(200).json(updatedAddress);
-    } catch (error) {
-      res.status(500).json({ error: "Internal server error" });
-    }
-  },
+      return res.status(200).json({ result: address });
+    },
 
-  // Delete an address by ID
-  deleteAddressById: async (req, res) => {
-    try {
-      const deletedAddress = await addresses.findByIdAndDelete(req.params.id);
-      if (!deletedAddress) {
-        return res.status(404).json({ message: "Address not found" });
+    deleteAddressById: async (req, res) => {
+      const address = await addresses.findByIdAndDelete({ _id: req.params.addressId, user_id: req.user_id });
+      if (!address) {
+        return res.status(404).json({ message: 'Address not found with id ' + req.params.addressId });
       }
-      res.status(200).json({ message: "Address deleted successfully" });
-    } catch (error) {
-      res.status(500).json({ error: "Internal server error" });
+      return res.status(200).json({ result: 'Address deleted successfully' });
     }
-  },
-};
-
-module.exports = { ...addAddress };
 
 
+}
+
+module.exports = {...addressController};

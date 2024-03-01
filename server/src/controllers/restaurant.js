@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 const restaurantController = {
     signup: async (req, res) => {
-        const {name, email, password, address, phone, cuisine, openingTime, closingTime} = req.body;
+        const {name, email, password, address, phone, cuisine, banner, location, openingTime, closingTime} = req.body;
         try {
             const otp = Math.floor(1000 + Math.random() * 9000);
             const isValid = await authValidation.registration(req.body);
@@ -33,10 +33,10 @@ const restaurantController = {
 
     verifyOtp: async (req, res) => {
         const {otp} = req.body;
-        const {name, email, password, address, phone, cuisine, openingTime, closingTime } = req.session.userData;
+        const {name, email, password, address, phone, cuisine, location, banner, openingTime, closingTime } = req.session.userData;
         if(req.session.otp === otp){
             const hashedPassword = await bcryptjs.hash(password,12);
-            const newUser = await restaurants.create({name, email, password: hashedPassword, otp: otp, address, phone, cuisine, openingTime, closingTime});
+            const newUser = await restaurants.create({name, email, password: hashedPassword, otp: otp, address, phone, cuisine, banner, location, openingTime, closingTime});
             return res.status(200).json({result: newUser})
         }
         return res.status(404).json({message: "Invalid OTP"})
@@ -110,7 +110,7 @@ const restaurantController = {
 
     updateProfile: async (req, res, next) => {   
         const _id = req.user_id;
-        const {name, email, password, phone, address, cuisine, openingTime, closingTime} = req.body;
+        const {name, email, password, phone, address, cuisine, banner, location, openingTime, closingTime} = req.body;
 
         if(!mongoose.Types.ObjectId.isValid(_id)){
             return res.status(404).send('Please enter a valid id number');
@@ -118,7 +118,7 @@ const restaurantController = {
 
         try {
             const hashedpassword = await bcryptjs.hash(password,12);
-            const updateProfile = await restaurants.findByIdAndUpdate(_id, { $set: { 'name': name, "email": email, 'password': hashedpassword, 'phone': phone, 'address': address, 'cuisine': cuisine, 'openingTime': openingTime, 'closingTime': closingTime }}, { new: true})
+            const updateProfile = await restaurants.findByIdAndUpdate(_id, { $set: { 'name': name, "email": email, 'password': hashedpassword, 'phone': phone, 'address': address, 'cuisine': cuisine, "banner": banner, "location": location, 'openingTime': openingTime, 'closingTime': closingTime }}, { new: true})
             res.status(200).json(updateProfile)
         } catch (error) {
             res.status(405).json({ message: error.message})

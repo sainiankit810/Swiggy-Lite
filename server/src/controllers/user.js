@@ -34,12 +34,11 @@ const userController = {
 
     verifyOtp: async (req, res) => {
         const {otp} = req.body;
-        console.log(req.session.otp)
         console.log(req.session.userData)
         const {fullname, email, password, phone  } = req.session.userData;
         if(req.session.otp === otp){
             const hashedPassword = await bcryptjs.hash(password,12);
-            const newUser = await users.create({fullname, email, password: hashedPassword, phone, otp: otp, auth_token, google_id, facebook_id});
+            const newUser = await users.create({fullname, email, password: hashedPassword, phone, otp: otp});
             return res.status(200).json({result: newUser})
         }
         return res.status(404).json({message: "Invalid OTP"})

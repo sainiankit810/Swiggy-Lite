@@ -12,6 +12,7 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+const homeRoute = require('./routes/home');
 const userRoute = require('./routes/user')
 const restroRoute = require('./routes/restaurants')
 const menuRoute = require('./routes/menu')
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
     res.send('This is the home page of the server.');
 });
 
+app.use('/api', homeRoute);
 app.use('/api/user', userRoute);
 app.use('/api/restaurants', restroRoute);
 app.use('/api/restaurants/menu', menuRoute);

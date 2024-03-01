@@ -7,10 +7,6 @@ const addressSchema = new Schema({
         ref: 'users'
     },
 
-    restaurant_id: {
-        type: String,
-    },
-
     address: {
         type: String,
         required: true
