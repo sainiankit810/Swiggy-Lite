@@ -5,9 +5,9 @@ const router = Router()
 
 router.post('/add', auth,address.addAddress)
 router.get('/getall', auth, address.getAllAddresses)
-router.get('/getone/:id', auth, address.getAddressById)
-router.put('/update/:id', auth, address.updateAddressById)
-router.delete('/delete/:id', auth, address.deleteAddressById)
+router.get('/getone/:id', address.getAddressById)
+router.put('/update/:id', address.updateAddressById)
+router.delete('/delete/:id', address.deleteAddressById)
 
 module.exports = router
 

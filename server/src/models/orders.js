@@ -7,25 +7,10 @@ const orderSchema = new Schema({
         required: true
     },
 
-    restaurant_id: {
-        type: String,
-        required: true
-    },
-
-    cart_id: {
-        type: String,
-        required: true
-    },
-
-    driver_id: {
-        type: String,
-        required: true
-    },
-
-    coupon_id: {
-        type: String,
-        required: true
-    },
+    // restaurant_id: {
+    //     type: String,
+    //     required: true
+    // },
 
     order_items: {
         type: Array,
@@ -38,11 +23,6 @@ const orderSchema = new Schema({
     },
 
     order_status: {
-        type: String,
-        required: true
-    },
-
-    delivery_address: {
         type: String,
         required: true
     },

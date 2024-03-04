@@ -6,8 +6,8 @@ const router = Router();
 
 router.post('/create',auth,menuController.create)
 router.get('/all',auth, menuController.findAll)
-router.get('/findone/:menuId',auth, menuController.findOne)
-router.patch('/update/:menuId',auth,menuController.update)
-router.delete('/delete/:menuId',auth,menuController.delete)
+router.get('/findone/:menuId', menuController.findOne)
+router.patch('/update/:menuId', menuController.update)
+router.delete('/delete/:menuId', menuController.delete)
 
 module.exports = router;

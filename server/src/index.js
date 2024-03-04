@@ -17,6 +17,8 @@ const userRoute = require('./routes/user')
 const restroRoute = require('./routes/restaurants')
 const menuRoute = require('./routes/menu')
 const addressRoute = require('./routes/address')
+const cartRoute = require('./routes/cart')
+const orderRoute = require('./routes/order')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +32,8 @@ app.use('/api/user', userRoute);
 app.use('/api/restaurants', restroRoute);
 app.use('/api/restaurants/menu', menuRoute);
 app.use('/api/user/address', addressRoute);
+app.use('/api/user/cart', cartRoute);
+app.use('/api/user/order', orderRoute);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

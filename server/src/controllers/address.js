@@ -24,28 +24,27 @@ const addressController = {
     },
 
     getAddressById: async (req, res) => {
-      const address = await addresses.findById({ _id: req.params.addressId, user_id: req.user_id });
+      const address = await addresses.findById(req.params.id);
       if (!address) {
-        return res.status(404).json({ message: 'Address not found with id ' + req.params.addressId });
+        return res.status(404).json({ message: 'Address not found with id ' + req.params.id });
       }
       return res.status(200).json({ result: address });
     },
 
     updateAddressById: async (req, res) => {
       const { address, city, state, pincode, location } = req.body;
-      const newaddress = await addresses.findByIdAndUpdate({ _id: req.params.addressId, user_id: req.user_id }, 
-        {address, city, state, pincode, location},{ new: true });
+      const newaddress = await addresses.findByIdAndUpdate(req.params.id, { address, city, state, pincode, location }, { new: true });
 
       if (!newaddress) {
-        return res.status(404).json({ message: 'Address not found with id ' + req.params.addressId });
+        return res.status(404).json({ message: 'Address not found with id ' + req.params.id });
       }
-      return res.status(200).json({ result: address });
+      return res.status(200).json({ result: newaddress });
     },
 
     deleteAddressById: async (req, res) => {
-      const address = await addresses.findByIdAndDelete({ _id: req.params.addressId, user_id: req.user_id });
+      const address = await addresses.findByIdAndDelete(req.params.id );
       if (!address) {
-        return res.status(404).json({ message: 'Address not found with id ' + req.params.addressId });
+        return res.status(404).json({ message: 'Address not found with id ' + req.params.id });
       }
       return res.status(200).json({ result: 'Address deleted successfully' });
     }

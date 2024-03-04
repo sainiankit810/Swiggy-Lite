@@ -33,8 +33,7 @@ const menuController = {
     },
 
     findOne: async (req, res) => {
-        console.log(req.params)
-        const menu = await menus.findById({ _id: req.params.menuId, restaurant_id: req.user_id });
+        const menu = await menus.findById(req.params.menuId);
         if (!menu) {
             return res.status(404).json({ message: "Menu not found with id " + req.params.menuId });
         }
@@ -43,8 +42,7 @@ const menuController = {
 
     update: async (req, res) => {
         const { item_name, item_price, item_description, item_category, item_image, item_availability } = req.body;
-        const restaurant_id = req.user_id;
-        const menu = await menus.findByIdAndUpdate({ _id: req.params.menuId, restaurant_id}, {
+        const menu = await menus.findByIdAndUpdate(req.params.menuId, {
              item_name, item_price, item_description, item_category, item_image, item_availability
         }, { new: true });
 

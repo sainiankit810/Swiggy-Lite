@@ -10,6 +10,7 @@ const restaurantValidation = {
             address: joi.string().min(3).max(100).required(),
             banner: joi.string().required(),
             cuisine: joi.array().items(joi.string()),
+            avg_rating: joi.number().default(0),
             location: joi.object({
                 type: joi.string().default('Point'),
                 coordinates: joi.array().items(joi.number()).required()
