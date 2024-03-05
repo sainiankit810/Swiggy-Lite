@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema({
     user_id: {
         type: String,
-        required: true
     },
 
     // restaurant_id: {
@@ -14,22 +13,18 @@ const orderSchema = new Schema({
 
     order_items: {
         type: Array,
-        required: true
     },
 
     order_time: {
         type: String,
-        required: true
     },
 
     order_status: {
         type: String,
-        required: true
     },
 
     total_amount: {
         type: Number,
-        required: true
     },
 },
 {

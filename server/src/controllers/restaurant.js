@@ -22,6 +22,7 @@ const restaurantController = {
             req.session.otp = otp;
             req.session.userData = req.body;
             await emailsent(req.body.email,otp);
+            console.log(otp)
             return res.status(200).json({message: "OTP sent to your email"})
            
 

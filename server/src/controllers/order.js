@@ -12,7 +12,7 @@ const orderController = {
 
       // Calculate total amount for the order
       const totalAmount = cartItems.reduce((total, cartItem) => {
-        return total + cartItems.total_amount;
+        return total + cartItem.total_amount;
       }, 0);
 
       // Create order
@@ -28,7 +28,7 @@ const orderController = {
       }); 
 
       // Clear user's cart after order is placed
-      await carts.deleteMany({ user_id });
+      await carts.deleteMany({ user_id: req.user_id });
 
       return res.status(201).json({ message: 'Order placed successfully', order });
     } catch (error) {
@@ -40,6 +40,7 @@ const orderController = {
   getOrder: async (req, res) => {
     try {
       const allOrders = await orders.find({ user_id: req.user_id });
+      console.log(allOrders);
       return res.status(200).json({ result: allOrders });
     } catch (error) {
       console.error(error);
