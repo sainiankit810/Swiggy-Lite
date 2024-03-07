@@ -6,10 +6,17 @@ const cartSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Reference to the User model
     },
+
+    restaurant_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Restaurant', // Reference to the Restaurant model
+    },
+
     item_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Menu', // Reference to the Item model
     },
+    
     quantity: {
         type: Number,
         default: 1 // Default quantity is 1

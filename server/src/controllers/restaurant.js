@@ -55,7 +55,8 @@ const restaurantController = {
                 return res.status(404).json({message: "Invalid credentials"})
             }
             
-            const access_token = jwt.sign({email: existUser?.email,_id:existUser?._id},process.env.ACCESS_TOKEN_SECRET,{expiresIn: '1h'})
+            const access_token = jwt.sign({email: existUser?.email,_id:existUser?._id},process.env.ACCESS_TOKEN_SECRET,{expiresIn: '24h'})
+            
             // Update user's token in the database
             existUser.auth_token = access_token;
             await existUser.save();

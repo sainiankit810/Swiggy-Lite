@@ -1,38 +1,5 @@
 const nodemailer = require('nodemailer');
 
-const randomStr = (len, arr) => {
-    var digits = arr;
-    let OTP = '';
-    for (let i = 0; i < len; i++) {
-        OTP += digits[Math.floor(Math.random() * 10)];
-    }
-    if (OTP.length < len || OTP.length > len) {
-        randomStr(len, arr);
-    }
-    return (OTP);
-}
-
-const showResponse = (status, message, data = null, other = null, code = null) => {
-    let response = {}
-    response.status = status
-    response.message = message
-    if (data !== null) {
-        response.data = data
-    }
-    if (other !== null) {
-        response.other = other
-    }
-    if (code !== null) {
-        response.code = code
-    }
-    return response;
-}
-
-const showOutput = (res, response, code) => {
-    delete response.code;
-    res.status(code).json(response);
-}
-
 const emailsent = async (email, otp) => {
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -63,9 +30,7 @@ const emailsent = async (email, otp) => {
 };
 
 
+
 module.exports = {
-    randomStr,
-    showResponse,
-    showOutput,
     emailsent
 }
